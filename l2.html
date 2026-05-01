@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Claude Code Config — L2 · Skills</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body data-page="l2">
+<nav>
+  <div class="nav-inner">
+    <a class="nav-brand" href="index.html"><div class="nav-brand-icon">&#10035;</div><span class="nav-brand-text">Claude Code Config</span></a>
+    <div class="nav-tabs">
+      <a class="nav-tab" href="index.html" style="--tab-color:#888"><span class="nav-dot"></span>Overview</a>
+      <a class="nav-tab" href="l1.html" style="--tab-color:#e84545"><span class="nav-dot" style="background:#e84545"></span>L1 &middot; CLAUDE.md</a>
+      <a class="nav-tab" href="l2.html" style="--tab-color:#f0a030"><span class="nav-dot" style="background:#f0a030"></span>L2 &middot; Skills</a>
+      <a class="nav-tab" href="l3.html" style="--tab-color:#e8722a"><span class="nav-dot" style="background:#e8722a"></span>L3 &middot; Hooks</a>
+      <a class="nav-tab" href="l4.html" style="--tab-color:#4a90e2"><span class="nav-dot" style="background:#4a90e2"></span>L4 &middot; Subagents</a>
+      <a class="nav-tab" href="l5.html" style="--tab-color:#a78bfa"><span class="nav-dot" style="background:#a78bfa"></span>L5 &middot; Plugins</a>
+      <a class="nav-tab" href="mcp.html" style="--tab-color:#2dd4bf"><span class="nav-dot" style="background:#2dd4bf"></span>MCP</a>
+    </div>
+    <div class="nav-gh"><a class="gh-btn" href="https://github.com/dantonoli/claude-code-config-guide" target="_blank"><svg width="13" height="13" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>GitHub</a></div>
+  </div>
+</nav>
+
+<div class="page">
+  <div class="s-header">
+    <div class="s-badge" style="background:rgba(240,160,48,.1);border:1px solid rgba(240,160,48,.25);color:var(--amber)">L2</div>
+    <div class="s-meta">
+      <div class="s-layer">Layer 2 &middot; Knowledge</div>
+      <h1 class="s-title" style="color:var(--amber)">Skills</h1>
+      <p class="s-desc">On-demand. Modular. Description-matched, auto-invoked context.</p>
+    </div>
+  </div>
+
+  <div class="quote-bar" style="--accent:var(--amber)">One skill. Wired forever. Future Claude knows.</div>
+
+  <div class="g2">
+    <div class="card"><div class="card-label">Global &middot; ~/.claude/skills/</div><div class="card-title">Reusable everywhere</div><div class="card-body">PDF, video, Excalidraw tools<br>Skills you reuse across projects<br>Loaded only when needed</div></div>
+    <div class="card"><div class="card-label">Project &middot; .claude/skills/</div><div class="card-title">Domain knowledge</div><div class="card-body">Internal API patterns<br>Project-specific workflows<br>Domain knowledge for this repo</div></div>
+  </div>
+
+  <div class="sec">Skill folder structure</div>
+  <div class="ft">
+    <div class="l1"><span class="ff">skills/pdf-skill/</span></div>
+    <div class="l2"><span class="fn">SKILL.md</span><span class="fd">&mdash; description Claude matches against &rarr; auto-invoked</span></div>
+    <div class="l2"><span class="fn">scripts/</span><span class="fd">&mdash; reference scripts the skill calls</span></div>
+    <div class="l2"><span class="fn">templates/</span><span class="fd">&mdash; boilerplate the skill copies into the project</span></div>
+    <div class="l2"><span class="fn">assets/</span><span class="fd">&mdash; images, fonts, configs the skill ships</span></div>
+    <div class="l2"><span class="fn">context.md</span><span class="fd">&mdash; on-demand isolated subagent context</span></div>
+  </div>
+
+  <div class="note">context.md is the escape hatch for heavy skills &mdash; instead of loading everything into the main context, Claude spawns an isolated subagent using context.md as its system prompt. Keeps the main context window clean.</div>
+
+  <div class="sec">SKILL.md template</div>
+  <div class="cb">
+    <div class="cb-hdr"><span class="cbd" style="background:#e84545"></span><span class="cbd" style="background:#f0a030"></span><span class="cbd" style="background:#3ec97a"></span>&nbsp;skills/pdf-skill/SKILL.md</div>
+<span class="cm">---</span>
+<span class="ck">name:</span> <span class="cs">pdf-skill</span>
+<span class="ck">description:</span> <span class="cs">Use when reading, converting, or extracting</span>
+<span class="cs">             content from PDF files. Handles text,</span>
+<span class="cs">             tables, images, and form fields.</span>
+<span class="cm">---</span>
+
+<span class="csym">##</span> <span class="ck">Environment</span>
+<span class="cv">- Primary lib: pymupdf4llm (best for LLM pipelines)</span>
+<span class="cv">- Fallback: pdfplumber for table extraction</span>
+<span class="cv">- Output dir: /tmp/pdf-out/</span>
+
+<span class="csym">##</span> <span class="ck">Workflow</span>
+<span class="cv">1. Read with pymupdf4llm.to_markdown(path)</span>
+<span class="cv">2. Tables: pdfplumber.open(path).pages[n].extract_table()</span>
+<span class="cv">3. Save output to /tmp/pdf-out/{filename}.md</span>
+
+<span class="csym">##</span> <span class="ck">Never do</span>
+<span class="cv">- Never use PyPDF2 (deprecated)</span>
+<span class="cv">- Never load entire PDF into context if &gt; 50 pages</span>
+<span class="cm">  &rarr; use context.md to spawn an isolated reader subagent</span>
+    <button class="copy-btn" onclick="copyCode(this)">copy</button>
+  </div>
+
+  <div class="tip">The description field is how Claude decides to pull in the skill. Write it to match how users phrase requests &mdash; "convert this PDF", "read this PDF", "extract tables from..."</div>
+
+  <div class="page-nav">
+    <a class="pn-btn" href="l1.html">&larr; <div><span>Back</span><span class="pn-label">L1 &middot; CLAUDE.md</span></div></a>
+    <a class="pn-btn next" href="l3.html">&rarr; <div><span>Next</span><span class="pn-label">L3 &middot; Hooks</span></div></a>
+  </div>
+</div>
+
+<footer><p>Claude Code &middot; Agent Development Kit &middot; <a href="https://github.com/dantonoli/claude-code-config-guide" target="_blank">github.com/dantonoli/claude-code-config-guide</a></p></footer>
+<script src="nav.js"></script>
+</body>
+</html>

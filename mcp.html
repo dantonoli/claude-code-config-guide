@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Claude Code Config — MCP Server</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body data-page="mcp">
+<nav>
+  <div class="nav-inner">
+    <a class="nav-brand" href="index.html"><div class="nav-brand-icon">&#10035;</div><span class="nav-brand-text">Claude Code Config</span></a>
+    <div class="nav-tabs">
+      <a class="nav-tab" href="index.html" style="--tab-color:#888"><span class="nav-dot"></span>Overview</a>
+      <a class="nav-tab" href="l1.html" style="--tab-color:#e84545"><span class="nav-dot" style="background:#e84545"></span>L1 &middot; CLAUDE.md</a>
+      <a class="nav-tab" href="l2.html" style="--tab-color:#f0a030"><span class="nav-dot" style="background:#f0a030"></span>L2 &middot; Skills</a>
+      <a class="nav-tab" href="l3.html" style="--tab-color:#e8722a"><span class="nav-dot" style="background:#e8722a"></span>L3 &middot; Hooks</a>
+      <a class="nav-tab" href="l4.html" style="--tab-color:#4a90e2"><span class="nav-dot" style="background:#4a90e2"></span>L4 &middot; Subagents</a>
+      <a class="nav-tab" href="l5.html" style="--tab-color:#a78bfa"><span class="nav-dot" style="background:#a78bfa"></span>L5 &middot; Plugins</a>
+      <a class="nav-tab" href="mcp.html" style="--tab-color:#2dd4bf"><span class="nav-dot" style="background:#2dd4bf"></span>MCP</a>
+    </div>
+    <div class="nav-gh"><a class="gh-btn" href="https://github.com/dantonoli/claude-code-config-guide" target="_blank"><svg width="13" height="13" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>GitHub</a></div>
+  </div>
+</nav>
+<div class="page">
+  <div class="s-header">
+    <div class="s-badge" style="background:rgba(45,212,191,.1);border:1px solid rgba(45,212,191,.25);color:var(--teal)">MCP</div>
+    <div class="s-meta">
+      <div class="s-layer">External Integration</div>
+      <h1 class="s-title" style="color:var(--teal)">MCP Server</h1>
+      <p class="s-desc">Model Context Protocol &mdash; connect Claude to external tools, APIs, and services. Plugs into the stack at any layer.</p>
+    </div>
+  </div>
+  <div class="quote-bar" style="--accent:var(--teal)">MCP Server connects Claude to the world outside the repo.</div>
+  <div class="sec">Available integrations</div>
+  <div class="mcp-grid">
+    <div class="mcp-pill"><span class="mcp-dot"></span>GitHub &mdash; repos, PRs, issues</div>
+    <div class="mcp-pill"><span class="mcp-dot"></span>Database &mdash; query, inspect schema</div>
+    <div class="mcp-pill"><span class="mcp-dot"></span>External APIs &mdash; REST, GraphQL</div>
+    <div class="mcp-pill"><span class="mcp-dot"></span>Custom tools &mdash; internal services</div>
+    <div class="mcp-pill"><span class="mcp-dot"></span>Slack &mdash; notifications, messages</div>
+    <div class="mcp-pill"><span class="mcp-dot"></span>Jira / Linear &mdash; issue tracking</div>
+  </div>
+  <div class="sec">Configure in .claude/settings.json</div>
+  <div class="cb">
+    <div class="cb-hdr"><span class="cbd" style="background:#e84545"></span><span class="cbd" style="background:#f0a030"></span><span class="cbd" style="background:#3ec97a"></span>&nbsp;.claude/settings.json</div>
+{
+  <span class="ck">"mcp_servers"</span>: [
+    {
+      <span class="ck">"name"</span>: <span class="cs">"github"</span>,
+      <span class="ck">"url"</span>: <span class="cs">"https://mcp.github.com"</span>,
+      <span class="ck">"auth"</span>: { <span class="ck">"type"</span>: <span class="cs">"bearer"</span>, <span class="ck">"token"</span>: <span class="cs">"$GITHUB_TOKEN"</span> }
+    },
+    {
+      <span class="ck">"name"</span>: <span class="cs">"my-db"</span>,
+      <span class="ck">"command"</span>: <span class="cs">"npx @myorg/db-mcp-server"</span>,
+      <span class="ck">"env"</span>: { <span class="ck">"DB_URL"</span>: <span class="cs">"$DATABASE_URL"</span> }
+    }
+  ],
+  <span class="ck">"hooks"</span>: {
+    <span class="ck">"PreToolUse"</span>: <span class="cs">"hooks/PreToolUse.sh"</span>,
+    <span class="ck">"PostToolUse"</span>: <span class="cs">"hooks/PostToolUse.sh"</span>,
+    <span class="ck">"SessionStart"</span>: <span class="cs">"hooks/SessionStart.sh"</span>,
+    <span class="ck">"Stop"</span>: <span class="cs">"hooks/Stop.sh"</span>,
+    <span class="ck">"SubagentStop"</span>: <span class="cs">"hooks/SubagentStop.sh"</span>
+  }
+}
+    <button class="copy-btn" onclick="copyCode(this)">copy</button>
+  </div>
+  <div class="g2">
+    <div class="card"><div class="card-label">URL-based server</div><div class="card-title">Remote MCP</div><div class="card-body">Hosted endpoint, auth via bearer token<br>Good for SaaS tools (GitHub, Slack)<br>URL + token in settings.json</div></div>
+    <div class="card"><div class="card-label">Command-based server</div><div class="card-title">Local MCP</div><div class="card-body">Spawns a local process via npx/node<br>Good for internal APIs and databases<br>Env vars passed via env block</div></div>
+  </div>
+  <div class="tip">MCP servers declared in manifest.json (L5) travel with your plugin &mdash; every teammate gets the same external tool connections automatically on install.</div>
+  <div class="page-nav">
+    <a class="pn-btn" href="l5.html">&larr; <div><span>Back</span><span class="pn-label">L5 &middot; Plugins</span></div></a>
+    <a class="pn-btn next" href="index.html">&#8617; <div><span>Start over</span><span class="pn-label">Overview</span></div></a>
+  </div>
+</div>
+<footer><p>Claude Code &middot; Agent Development Kit &middot; <a href="https://github.com/dantonoli/claude-code-config-guide" target="_blank">github.com/dantonoli/claude-code-config-guide</a></p></footer>
+<script src="nav.js"></script>
+</body>
+</html>

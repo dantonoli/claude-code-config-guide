@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Claude Code Config — L5 · Plugins</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body data-page="l5">
+<nav>
+  <div class="nav-inner">
+    <a class="nav-brand" href="index.html"><div class="nav-brand-icon">&#10035;</div><span class="nav-brand-text">Claude Code Config</span></a>
+    <div class="nav-tabs">
+      <a class="nav-tab" href="index.html" style="--tab-color:#888"><span class="nav-dot"></span>Overview</a>
+      <a class="nav-tab" href="l1.html" style="--tab-color:#e84545"><span class="nav-dot" style="background:#e84545"></span>L1 &middot; CLAUDE.md</a>
+      <a class="nav-tab" href="l2.html" style="--tab-color:#f0a030"><span class="nav-dot" style="background:#f0a030"></span>L2 &middot; Skills</a>
+      <a class="nav-tab" href="l3.html" style="--tab-color:#e8722a"><span class="nav-dot" style="background:#e8722a"></span>L3 &middot; Hooks</a>
+      <a class="nav-tab" href="l4.html" style="--tab-color:#4a90e2"><span class="nav-dot" style="background:#4a90e2"></span>L4 &middot; Subagents</a>
+      <a class="nav-tab" href="l5.html" style="--tab-color:#a78bfa"><span class="nav-dot" style="background:#a78bfa"></span>L5 &middot; Plugins</a>
+      <a class="nav-tab" href="mcp.html" style="--tab-color:#2dd4bf"><span class="nav-dot" style="background:#2dd4bf"></span>MCP</a>
+    </div>
+    <div class="nav-gh"><a class="gh-btn" href="https://github.com/dantonoli/claude-code-config-guide" target="_blank"><svg width="13" height="13" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>GitHub</a></div>
+  </div>
+</nav>
+<div class="page">
+  <div class="s-header">
+    <div class="s-badge" style="background:rgba(167,139,250,.1);border:1px solid rgba(167,139,250,.25);color:var(--purple)">L5</div>
+    <div class="s-meta">
+      <div class="s-layer">Layer 5 &middot; Distribution</div>
+      <h1 class="s-title" style="color:var(--purple)">Plugins</h1>
+      <p class="s-desc">Bundle. Ship. Install. npm packages for agent capabilities.</p>
+    </div>
+  </div>
+  <div class="quote-bar" style="--accent:var(--purple)">Build it once. Install it everywhere. The team levels up together.</div>
+  <div class="g2">
+    <div class="card"><div class="card-label">Manifest &middot; manifest.json</div><div class="card-title">Declares what's inside</div><div class="card-body">Lists skills, agents, hooks, commands<br>Versioned and signed<br>Bundles the full stack</div></div>
+    <div class="card"><div class="card-label">Store &middot; marketplace.url</div><div class="card-title">Discoverable by team</div><div class="card-body">npm packages for agent capabilities<br>One-click install per repo<br>Updates push to everyone</div></div>
+  </div>
+  <div class="sec">What you can ship</div>
+  <div class="hook-list">
+    <div class="hook-row"><span class="hook-name" style="color:var(--purple)">skills/</span><span class="hook-desc">Knowledge bundles ride along</span></div>
+    <div class="hook-row"><span class="hook-name" style="color:var(--purple)">agents/</span><span class="hook-desc">Subagents ship inside the plugin</span></div>
+    <div class="hook-row"><span class="hook-name" style="color:var(--purple)">hooks/</span><span class="hook-desc">Guardrails travel with the bundle</span></div>
+    <div class="hook-row"><span class="hook-name" style="color:var(--purple)">commands/</span><span class="hook-desc">Slash-commands the whole team gets</span></div>
+  </div>
+  <div class="sec">manifest.json</div>
+  <div class="cb">
+    <div class="cb-hdr"><span class="cbd" style="background:#e84545"></span><span class="cbd" style="background:#f0a030"></span><span class="cbd" style="background:#3ec97a"></span>&nbsp;plugins/manifest.json</div>
+{
+  <span class="ck">"name"</span>: <span class="cs">"my-plugin"</span>,
+  <span class="ck">"version"</span>: <span class="cs">"1.0.0"</span>,
+  <span class="ck">"skills"</span>: [<span class="cs">"build"</span>, <span class="cs">"ship"</span>, <span class="cs">"pdf"</span>],
+  <span class="ck">"agents"</span>: [<span class="cs">"code-reviewer"</span>, <span class="cs">"test-runner"</span>],
+  <span class="ck">"hooks"</span>: [<span class="cs">"PreToolUse.sh"</span>, <span class="cs">"PostToolUse.sh"</span>],
+  <span class="ck">"commands"</span>: [<span class="cs">"/review"</span>, <span class="cs">"/ship"</span>, <span class="cs">"/test"</span>],
+  <span class="ck">"mcp_servers"</span>: [
+    { <span class="ck">"name"</span>: <span class="cs">"github"</span>, <span class="ck">"url"</span>: <span class="cs">"https://mcp.github.com"</span> }
+  ]
+}
+    <button class="copy-btn" onclick="copyCode(this)">copy</button>
+  </div>
+  <div class="sec">team.install &mdash; one-liner onboarding</div>
+  <div class="cb">
+    <div class="cb-hdr"><span class="cbd" style="background:#e84545"></span><span class="cbd" style="background:#f0a030"></span><span class="cbd" style="background:#3ec97a"></span>&nbsp;plugins/team.install</div>
+<span class="csym">#!/bin/bash</span>
+<span class="cm"># Run once per new machine &mdash; one install, every teammate aligned</span>
+npm install -g <span class="cs">@myorg/agent-config</span>
+agent-config apply --global
+agent-config link --project .
+echo <span class="cs">"[done] Claude Code configured for the team"</span>
+    <button class="copy-btn" onclick="copyCode(this)">copy</button>
+  </div>
+  <div class="warn">Build and stabilize L1&ndash;L4 first, then distribute as a plugin. Don't distribute a moving target.</div>
+  <div class="page-nav">
+    <a class="pn-btn" href="l4.html">&larr; <div><span>Back</span><span class="pn-label">L4 &middot; Subagents</span></div></a>
+    <a class="pn-btn next" href="mcp.html">&rarr; <div><span>Next</span><span class="pn-label">MCP Server</span></div></a>
+  </div>
+</div>
+<footer><p>Claude Code &middot; Agent Development Kit &middot; <a href="https://github.com/dantonoli/claude-code-config-guide" target="_blank">github.com/dantonoli/claude-code-config-guide</a></p></footer>
+<script src="nav.js"></script>
+</body>
+</html>

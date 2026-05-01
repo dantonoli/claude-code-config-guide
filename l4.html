@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Claude Code Config — L4 · Subagents</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body data-page="l4">
+<nav>
+  <div class="nav-inner">
+    <a class="nav-brand" href="index.html"><div class="nav-brand-icon">&#10035;</div><span class="nav-brand-text">Claude Code Config</span></a>
+    <div class="nav-tabs">
+      <a class="nav-tab" href="index.html" style="--tab-color:#888"><span class="nav-dot"></span>Overview</a>
+      <a class="nav-tab" href="l1.html" style="--tab-color:#e84545"><span class="nav-dot" style="background:#e84545"></span>L1 &middot; CLAUDE.md</a>
+      <a class="nav-tab" href="l2.html" style="--tab-color:#f0a030"><span class="nav-dot" style="background:#f0a030"></span>L2 &middot; Skills</a>
+      <a class="nav-tab" href="l3.html" style="--tab-color:#e8722a"><span class="nav-dot" style="background:#e8722a"></span>L3 &middot; Hooks</a>
+      <a class="nav-tab" href="l4.html" style="--tab-color:#4a90e2"><span class="nav-dot" style="background:#4a90e2"></span>L4 &middot; Subagents</a>
+      <a class="nav-tab" href="l5.html" style="--tab-color:#a78bfa"><span class="nav-dot" style="background:#a78bfa"></span>L5 &middot; Plugins</a>
+      <a class="nav-tab" href="mcp.html" style="--tab-color:#2dd4bf"><span class="nav-dot" style="background:#2dd4bf"></span>MCP</a>
+    </div>
+    <div class="nav-gh"><a class="gh-btn" href="https://github.com/dantonoli/claude-code-config-guide" target="_blank"><svg width="13" height="13" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>GitHub</a></div>
+  </div>
+</nav>
+<div class="page">
+  <div class="s-header">
+    <div class="s-badge" style="background:rgba(74,144,226,.1);border:1px solid rgba(74,144,226,.25);color:var(--blue)">L4</div>
+    <div class="s-meta">
+      <div class="s-layer">Layer 4 &middot; Delegation</div>
+      <h1 class="s-title" style="color:var(--blue)">Subagents</h1>
+      <p class="s-desc">Own context window. Delegate work without polluting your main session.</p>
+    </div>
+  </div>
+  <div class="quote-bar" style="--accent:var(--blue)">Delegate the noise. Keep the main thread clean.</div>
+  <div class="g2">
+    <div class="card"><div class="card-label">Parent &middot; main session</div><div class="card-title">Where you talk to Claude</div><div class="card-body">Plans the work<br>Calls subagents like tools<br>Stays clean &mdash; only sees results</div></div>
+    <div class="card"><div class="card-label">Child &middot; subagent run</div><div class="card-title">Spawned for one job</div><div class="card-body">Own system prompt + tools<br>Own context window<br>Returns ONE message back</div></div>
+  </div>
+  <div class="sec">Built-in subagents</div>
+  <div class="hook-list">
+    <div class="hook-row"><span class="hook-name" style="color:var(--blue)">code-reviewer.md</span><span class="hook-desc">Reviews diffs against repo conventions</span></div>
+    <div class="hook-row"><span class="hook-name" style="color:var(--blue)">test-runner.md</span><span class="hook-desc">Custom tools, custom permissions &mdash; runs suite</span></div>
+    <div class="hook-row"><span class="hook-name" style="color:var(--blue)">explorer.md</span><span class="hook-desc">Maps codebase, keeps main context clean</span></div>
+    <div class="hook-row"><span class="hook-name" style="color:var(--blue)">feature-dev.md</span><span class="hook-desc">Designs and implements features end-to-end</span></div>
+  </div>
+  <div class="sec">Agent Teams &mdash; parallel execution</div>
+  <div class="g2">
+    <div class="card"><div class="card-label">Parallel execution</div><div class="card-title">Run subagents concurrently</div><div class="card-body">One subagent per module<br>All run at the same time<br>Lead agent aggregates results</div></div>
+    <div class="card"><div class="card-label">Message passing</div><div class="card-title">JSON in, JSON out</div><div class="card-body">Lead subagent coordinates<br>Shared permissions across agents<br>Results only flow back up</div></div>
+  </div>
+  <div class="sec">Subagent definition template</div>
+  <div class="cb">
+    <div class="cb-hdr"><span class="cbd" style="background:#e84545"></span><span class="cbd" style="background:#f0a030"></span><span class="cbd" style="background:#3ec97a"></span>&nbsp;subagents/code-reviewer.md</div>
+<span class="cm">---</span>
+<span class="ck">name:</span> <span class="cs">code-reviewer</span>
+<span class="ck">description:</span> <span class="cs">Reviews code for bugs, style, and security</span>
+<span class="ck">tools:</span> <span class="cv">[read_file, list_directory]</span>   <span class="cm"># no write access</span>
+<span class="ck">model:</span> <span class="cs">claude-sonnet-4-20250514</span>
+<span class="cm">---</span>
+
+<span class="csym">##</span> <span class="ck">Role</span>
+<span class="cv">Senior code reviewer. Receive a diff or file path.</span>
+<span class="cv">Return structured findings only &mdash; no chit-chat.</span>
+
+<span class="csym">##</span> <span class="ck">Output format (ONE message back)</span>
+<span class="cv">{ "issues": [{ "line": N, "severity": "high|med|low",</span>
+<span class="cv">               "message": "..." }] }</span>
+
+<span class="csym">##</span> <span class="ck">Rules</span>
+<span class="cv">- Flag SQL injections, XSS, hardcoded secrets</span>
+<span class="cv">- Check naming conventions from .claude/CLAUDE.md</span>
+<span class="cv">- Always return even if empty: { "issues": [] }</span>
+    <button class="copy-btn" onclick="copyCode(this)">copy</button>
+  </div>
+  <div class="tip">Agent Teams pattern: spawn code-reviewer, test-runner, and explorer in parallel &mdash; one per module &mdash; then a lead subagent aggregates all results before returning to the main session.</div>
+  <div class="page-nav">
+    <a class="pn-btn" href="l3.html">&larr; <div><span>Back</span><span class="pn-label">L3 &middot; Hooks</span></div></a>
+    <a class="pn-btn next" href="l5.html">&rarr; <div><span>Next</span><span class="pn-label">L5 &middot; Plugins</span></div></a>
+  </div>
+</div>
+<footer><p>Claude Code &middot; Agent Development Kit &middot; <a href="https://github.com/dantonoli/claude-code-config-guide" target="_blank">github.com/dantonoli/claude-code-config-guide</a></p></footer>
+<script src="nav.js"></script>
+</body>
+</html>

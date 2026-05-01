@@ -1,388 +1,273 @@
-
-<style>
-  @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Syne:wght@400;600;800&display=swap');
-  :root {
-    --bg:#0f0f0f;--surface:#171717;--surface2:#1e1e1e;--border:rgba(255,255,255,0.08);--border2:rgba(255,255,255,0.14);
-    --text:#e8e4dc;--muted:#666;
-    --red:#e84545;--amber:#f0a030;--green:#3ec97a;--blue:#4a90e2;--purple:#a78bfa;--orange:#e8722a;
-  }
-  .w{background:var(--bg);color:var(--text);font-family:'Syne',sans-serif;border-radius:12px;overflow:hidden;min-height:500px;}
-  .hdr{padding:24px 28px 0;background:var(--surface);border-bottom:1px solid var(--border);}
-  .eyebrow{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--red);letter-spacing:.12em;text-transform:uppercase;margin-bottom:6px;}
-  .htitle{font-size:24px;font-weight:800;letter-spacing:-.5px;margin-bottom:3px;}
-  .hsub{font-size:12px;color:var(--muted);font-family:'JetBrains Mono',monospace;margin-bottom:20px;}
-  .tabs{display:flex;gap:0;border-top:1px solid var(--border);overflow-x:auto;}
-  .tab{padding:11px 16px;font-size:11px;font-weight:600;font-family:'JetBrains Mono',monospace;cursor:pointer;color:var(--muted);border-top:2px solid transparent;margin-top:-1px;transition:all .15s;white-space:nowrap;flex-shrink:0;}
-  .tab:hover{color:var(--text);}
-  .tab.active{color:var(--text);border-top-color:var(--accent,var(--red));}
-  .dot{display:inline-block;width:7px;height:7px;border-radius:50%;margin-right:6px;}
-  .body{padding:24px 28px;}
-  .panel{display:none;}.panel.active{display:block;}
-  .lhero{display:flex;align-items:flex-start;gap:16px;margin-bottom:24px;}
-  .lbadge{flex-shrink:0;width:48px;height:48px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:700;}
-  .ldesc h2{font-size:19px;font-weight:800;margin-bottom:3px;letter-spacing:-.3px;}
-  .ldesc p{font-size:12px;color:var(--muted);line-height:1.6;font-family:'JetBrains Mono',monospace;}
-  .g2{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:18px;}
-  .g3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:18px;}
-  .g4{display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:10px;margin-bottom:18px;}
-  .card{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:14px 16px;}
-  .clabel{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:.1em;margin-bottom:7px;}
-  .ctitle{font-size:13px;font-weight:600;margin-bottom:5px;}
-  .cbody{font-size:11px;color:#888;line-height:1.7;font-family:'JetBrains Mono',monospace;}
-  .cb{background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:13px 15px;font-family:'JetBrains Mono',monospace;font-size:11.5px;line-height:1.85;margin-bottom:14px;overflow-x:auto;}
-  .cm{color:var(--muted);}.ck{color:var(--purple);}.cv{color:var(--green);}.cs{color:var(--amber);}.csym{color:var(--red);}.ccmd{color:var(--blue);}.co{color:var(--orange);}
-  .ft{background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:13px 15px;font-family:'JetBrains Mono',monospace;font-size:11.5px;line-height:2;margin-bottom:14px;}
-  .ff{color:var(--amber);}.fn{color:#aaa;}.fd{color:var(--muted);margin-left:8px;}
-  .l1{padding-left:0;}.l2{padding-left:18px;}.l3{padding-left:36px;}
-  .sl{list-style:none;padding:0;margin:0 0 18px;}
-  .sl li{display:flex;gap:12px;align-items:flex-start;padding:10px 0;border-bottom:1px solid var(--border);}
-  .sl li:last-child{border-bottom:none;}
-  .sn{flex-shrink:0;width:24px;height:24px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:700;}
-  .st{font-size:12px;line-height:1.6;}
-  .st strong{font-weight:600;display:block;margin-bottom:2px;}
-  .st span{color:var(--muted);font-family:'JetBrains Mono',monospace;font-size:10.5px;}
-  .tip{background:rgba(74,144,226,.07);border:1px solid rgba(74,144,226,.2);border-radius:8px;padding:11px 14px;font-size:11px;color:#7ab0e8;font-family:'JetBrains Mono',monospace;line-height:1.6;margin-bottom:14px;}
-  .warn{background:rgba(240,160,48,.07);border:1px solid rgba(240,160,48,.2);border-radius:8px;padding:11px 14px;font-size:11px;color:#c98a28;font-family:'JetBrains Mono',monospace;line-height:1.6;margin-bottom:14px;}
-  .flow{display:flex;align-items:center;gap:8px;margin-bottom:22px;flex-wrap:wrap;}
-  .fi{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:9px 13px;font-size:11px;font-weight:600;text-align:center;min-width:80px;}
-  .fa{color:var(--muted);font-size:14px;}
-  .sec{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.12em;color:var(--muted);margin-bottom:10px;font-family:'JetBrains Mono',monospace;}
-  .quote{background:var(--surface);border-left:3px solid var(--accent,var(--red));border-radius:0 8px 8px 0;padding:12px 16px;font-size:13px;font-weight:700;margin-bottom:18px;letter-spacing:-.2px;}
-  .row-hooks{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:18px;}
-  .hook-row{display:flex;justify-content:space-between;align-items:center;padding:9px 0;border-bottom:1px solid var(--border);font-size:12px;}
-  .hook-row:last-child{border-bottom:none;}
-  .hook-name{font-family:'JetBrains Mono',monospace;font-weight:600;font-size:11.5px;}
-  .hook-desc{color:var(--muted);font-family:'JetBrains Mono',monospace;font-size:10.5px;text-align:right;}
-</style>
-
-<div class="w">
-  <div class="hdr">
-    <div class="eyebrow">Claude Code · Agent Dev Kit</div>
-    <div class="htitle">Configuration Guide</div>
-    <div class="hsub">CLAUDE.md + Skills + Hooks + Subagents + Plugins — all five layers</div>
-    <div class="tabs">
-      <div class="tab active" onclick="show('ov')" style="--accent:#888"><span class="dot" style="background:#666"></span>Overview</div>
-      <div class="tab" onclick="show('l1')" style="--accent:#e84545"><span class="dot" style="background:#e84545"></span>L1 · CLAUDE.md</div>
-      <div class="tab" onclick="show('l2')" style="--accent:#f0a030"><span class="dot" style="background:#f0a030"></span>L2 · Skills</div>
-      <div class="tab" onclick="show('l3')" style="--accent:#e8722a"><span class="dot" style="background:#e8722a"></span>L3 · Hooks</div>
-      <div class="tab" onclick="show('l4')" style="--accent:#4a90e2"><span class="dot" style="background:#4a90e2"></span>L4 · Subagents</div>
-      <div class="tab" onclick="show('l5')" style="--accent:#a78bfa"><span class="dot" style="background:#a78bfa"></span>L5 · Plugins</div>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Claude Code Config — Overview</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body data-page="index">
+<nav>
+  <div class="nav-inner">
+    <a class="nav-brand" href="index.html">
+      <div class="nav-brand-icon">&#10035;</div>
+      <span class="nav-brand-text">Claude Code Config</span>
+    </a>
+    <div class="nav-tabs">
+      <a class="nav-tab" href="index.html" style="--tab-color:#888"><span class="nav-dot"></span>Overview</a>
+      <a class="nav-tab" href="l1.html" style="--tab-color:#e84545"><span class="nav-dot" style="background:#e84545"></span>L1 &middot; CLAUDE.md</a>
+      <a class="nav-tab" href="l2.html" style="--tab-color:#f0a030"><span class="nav-dot" style="background:#f0a030"></span>L2 &middot; Skills</a>
+      <a class="nav-tab" href="l3.html" style="--tab-color:#e8722a"><span class="nav-dot" style="background:#e8722a"></span>L3 &middot; Hooks</a>
+      <a class="nav-tab" href="l4.html" style="--tab-color:#4a90e2"><span class="nav-dot" style="background:#4a90e2"></span>L4 &middot; Subagents</a>
+      <a class="nav-tab" href="l5.html" style="--tab-color:#a78bfa"><span class="nav-dot" style="background:#a78bfa"></span>L5 &middot; Plugins</a>
+      <a class="nav-tab" href="mcp.html" style="--tab-color:#2dd4bf"><span class="nav-dot" style="background:#2dd4bf"></span>MCP</a>
+    </div>
+    <div class="nav-gh">
+      <a class="gh-btn" href="https://github.com/dantonoli/claude-code-config-guide" target="_blank">
+        <svg width="13" height="13" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>
+        GitHub
+      </a>
     </div>
   </div>
+</nav>
 
-  <div class="body">
+<div class="page">
+  <div class="hero-eyebrow">Agent Development Kit &middot; Five Layers + MCP</div>
+  <h1 class="hero-title">Configure<br><span>Claude Code</span></h1>
+  <p class="hero-sub">CLAUDE.md + Skills + Hooks + Subagents + Plugins + MCP Server<br>Everything you need to build a production-grade Claude Code agent stack.</p>
 
-    <!-- OVERVIEW -->
-    <div class="panel active" id="p-ov">
-      <div class="sec">Five layers, one stack</div>
-      <div class="flow">
-        <div class="fi" style="border-color:rgba(232,69,69,.4);color:var(--red)">CLAUDE.md<br><span style="font-size:9px;color:var(--muted);font-weight:400">sets rules</span></div>
-        <div class="fa">→</div>
-        <div class="fi" style="border-color:rgba(240,160,48,.4);color:var(--amber)">Skills<br><span style="font-size:9px;color:var(--muted);font-weight:400">expertise</span></div>
-        <div class="fa">→</div>
-        <div class="fi" style="border-color:rgba(232,114,42,.4);color:var(--orange)">Hooks<br><span style="font-size:9px;color:var(--muted);font-weight:400">guardrails</span></div>
-        <div class="fa">→</div>
-        <div class="fi" style="border-color:rgba(74,144,226,.4);color:var(--blue)">Subagents<br><span style="font-size:9px;color:var(--muted);font-weight:400">delegate</span></div>
-        <div class="fa">→</div>
-        <div class="fi" style="border-color:rgba(167,139,250,.4);color:var(--purple)">Plugins<br><span style="font-size:9px;color:var(--muted);font-weight:400">distribute</span></div>
-      </div>
-      <div class="sec">Full repo scaffold</div>
-      <div class="ft">
-        <div class="l1"><span class="ff">agent-dev-kit/</span></div>
-        <div class="l2"><span class="ff">.claude/</span><span class="fd">— Layer 1: always loaded</span></div>
-        <div class="l3"><span class="fn">CLAUDE.md</span><span class="fd">arch rules, naming, repo map</span></div>
-        <div class="l2"><span class="ff">skills/</span><span class="fd">— Layer 2: on-demand knowledge</span></div>
-        <div class="l3"><span class="fn">my-skill/SKILL.md</span><span class="fd">description-matched, auto-invoked</span></div>
-        <div class="l3"><span class="fn">my-skill/templates/</span><span class="fd">boilerplate the skill copies in</span></div>
-        <div class="l2"><span class="ff">hooks/</span><span class="fd">— Layer 3: deterministic guardrails</span></div>
-        <div class="l3"><span class="fn">PreToolUse.sh</span><span class="fd">block before tool runs</span></div>
-        <div class="l3"><span class="fn">PostToolUse.sh</span><span class="fd">lint / notify after tool runs</span></div>
-        <div class="l3"><span class="fn">Stop.sh</span><span class="fd">run when Claude finishes a turn</span></div>
-        <div class="l3"><span class="fn">SubagentStop.sh</span><span class="fd">run when a subagent returns</span></div>
-        <div class="l2"><span class="ff">subagents/</span><span class="fd">— Layer 4: isolated Claude instances</span></div>
-        <div class="l3"><span class="fn">code-reviewer.md</span><span class="fd">own context window, results only</span></div>
-        <div class="l3"><span class="fn">feature-dev.md</span><span class="fd">designs and implements end-to-end</span></div>
-        <div class="l2"><span class="ff">plugins/</span><span class="fd">— Layer 5: distribute to team</span></div>
-        <div class="l3"><span class="fn">plugin.json</span><span class="fd">declares skills, agents, hooks, commands</span></div>
-        <div class="l3"><span class="fn">commands/</span><span class="fd">slash-commands the team gets</span></div>
-      </div>
-      <div class="g3">
-        <div class="card"><div class="clabel">Install</div><div class="ctitle">Claude Code CLI</div><div class="cbody">npm install -g @anthropic-ai/claude-code</div></div>
-        <div class="card"><div class="clabel">Init project</div><div class="ctitle">Scaffold structure</div><div class="cbody">mkdir my-agent && cd my-agent<br>claude init</div></div>
-        <div class="card"><div class="clabel">Global config</div><div class="ctitle">Personal defaults</div><div class="cbody">~/.claude/CLAUDE.md<br>~/.claude/skills/</div></div>
-      </div>
-      <div class="tip">Click each layer tab to see full configuration details, file structures, and working code examples.</div>
+  <div class="hero-flow">
+    <a class="hfi" href="l1.html" style="border-color:rgba(232,69,69,.4);color:var(--red)">CLAUDE.md<span class="hfi-sub">sets rules</span></a>
+    <div class="hfa">&rarr;</div>
+    <a class="hfi" href="l2.html" style="border-color:rgba(240,160,48,.4);color:var(--amber)">Skills<span class="hfi-sub">provide expertise</span></a>
+    <div class="hfa">&rarr;</div>
+    <a class="hfi" href="l3.html" style="border-color:rgba(232,114,42,.4);color:var(--orange)">Hooks<span class="hfi-sub">enforce quality</span></a>
+    <div class="hfa">&rarr;</div>
+    <a class="hfi" href="l4.html" style="border-color:rgba(74,144,226,.4);color:var(--blue)">Subagents<span class="hfi-sub">delegate work</span></a>
+    <div class="hfa">&rarr;</div>
+    <a class="hfi" href="l5.html" style="border-color:rgba(167,139,250,.4);color:var(--purple)">Plugins<span class="hfi-sub">distribute to team</span></a>
+    <div class="hfa">+</div>
+    <a class="hfi" href="mcp.html" style="border-color:rgba(45,212,191,.4);color:var(--teal)">MCP Server<span class="hfi-sub">external tools</span></a>
+  </div>
+
+  <!-- LAYER DIAGRAM -->
+  <div class="ld-wrap">
+
+    <!-- side labels -->
+    <div class="ld-side ld-side-left">
+      <div class="ld-side-title">MCP Server</div>
+      <div class="ld-side-items">external tools<br>GitHub<br>database<br>APIs<br>custom</div>
     </div>
 
-    <!-- L1 -->
-    <div class="panel" id="p-l1">
-      <div class="lhero">
-        <div class="lbadge" style="background:rgba(232,69,69,.1);border:1px solid rgba(232,69,69,.25);color:var(--red)">L1</div>
-        <div class="ldesc"><h2 style="color:var(--red)">CLAUDE.md — Memory Layer</h2><p>Always loaded. Always active. The agent's constitution — write it once, save 100 prompts.</p></div>
+    <div class="ld-main">
+
+      <!-- root -->
+      <div class="ld-root">
+        <span class="ld-folder-icon">&#128193;</span>
+        <span class="ld-root-name">agent-dev-kit/</span>
+        <span class="ld-root-tag">Five layers, one stack</span>
       </div>
-      <div class="quote" style="border-left-color:var(--red)">Write CLAUDE.md once. Save yourself 100 prompts later.</div>
-      <div class="g2">
-        <div class="card"><div class="clabel">Global · ~/.claude/CLAUDE.md</div><div class="ctitle">Every project</div><div class="cbody">Your default voice + style<br>Tools you always have<br>Personal preferences</div></div>
-        <div class="card"><div class="clabel">Project · .claude/CLAUDE.md</div><div class="ctitle">This repo only</div><div class="cbody">Architecture rules<br>Naming + repo conventions<br>Things future-you will forget</div></div>
-      </div>
-      <div class="sec">What to put in it</div>
-      <div class="cb">
-<span class="cm"># .claude/CLAUDE.md</span>
 
-<span class="csym">##</span> <span class="ck">architecture.rules</span>
-<span class="cv">- All API routes live in /src/routes/</span>
-<span class="cv">- Services stateless, no direct DB in controllers</span>
-<span class="cv">- Dependency injection via FastAPI Depends()</span>
-
-<span class="csym">##</span> <span class="ck">naming.conventions</span>
-<span class="cv">- Files: kebab-case    → user-service.py</span>
-<span class="cv">- Classes: PascalCase  → UserService</span>
-<span class="cv">- Functions: snake_case → get_user_by_id</span>
-
-<span class="csym">##</span> <span class="ck">test.expectations</span>
-<span class="cv">- Always write unit tests for new services</span>
-<span class="cv">- Use pytest + pytest-asyncio for async routes</span>
-<span class="cv">- Mocks live in tests/mocks/</span>
-
-<span class="csym">##</span> <span class="ck">repo.map</span>
-<span class="cv">- /src/routes/   FastAPI routers</span>
-<span class="cv">- /src/services/ business logic</span>
-<span class="cv">- /src/models/   Pydantic schemas</span>
-      </div>
-      <ul class="sl">
-        <li><div class="sn" style="background:rgba(232,69,69,.12);color:var(--red)">1</div><div class="st"><strong>Create global file</strong><span>mkdir -p ~/.claude && touch ~/.claude/CLAUDE.md</span></div></li>
-        <li><div class="sn" style="background:rgba(232,69,69,.12);color:var(--red)">2</div><div class="st"><strong>Create project file</strong><span>mkdir -p .claude && touch .claude/CLAUDE.md</span></div></li>
-        <li><div class="sn" style="background:rgba(232,69,69,.12);color:var(--red)">3</div><div class="st"><strong>Commit to git</strong><span>It's documentation for Claude AND your team. Both live in the same file.</span></div></li>
-      </ul>
-      <div class="tip">Write it like onboarding a smart junior dev: architecture decisions, naming rules, what not to touch, and where things live.</div>
-    </div>
-
-    <!-- L2 -->
-    <div class="panel" id="p-l2">
-      <div class="lhero">
-        <div class="lbadge" style="background:rgba(240,160,48,.1);border:1px solid rgba(240,160,48,.25);color:var(--amber)">L2</div>
-        <div class="ldesc"><h2 style="color:var(--amber)">Skills — Knowledge Layer</h2><p>On-demand. Modular. Description-matched, auto-invoked context. One skill, wired forever.</p></div>
-      </div>
-      <div class="quote" style="border-left-color:var(--amber)">One skill. Wired forever. Future Claude knows.</div>
-      <div class="g2">
-        <div class="card"><div class="clabel">Global · ~/.claude/skills/</div><div class="ctitle">Reusable everywhere</div><div class="cbody">PDF, video, Excalidraw tools<br>Skills you reuse across projects<br>Loaded only when needed</div></div>
-        <div class="card"><div class="clabel">Project · .claude/skills/</div><div class="ctitle">Domain knowledge</div><div class="cbody">Internal API patterns<br>Project-specific workflows<br>Domain knowledge for this repo</div></div>
-      </div>
-      <div class="sec">Skill folder structure</div>
-      <div class="ft">
-        <div class="l1"><span class="ff">skills/my-skill/</span></div>
-        <div class="l2"><span class="fn">SKILL.md</span><span class="fd">— description Claude matches against</span></div>
-        <div class="l2"><span class="fn">scripts/</span><span class="fd">— reference scripts the skill calls</span></div>
-        <div class="l2"><span class="fn">templates/</span><span class="fd">— boilerplate the skill copies in</span></div>
-        <div class="l2"><span class="fn">assets/</span><span class="fd">— images, fonts, configs the skill ships</span></div>
-      </div>
-      <div class="sec">SKILL.md template</div>
-      <div class="cb">
-<span class="cm">---</span>
-<span class="ck">name:</span> <span class="cs">pdf-skill</span>
-<span class="ck">description:</span> <span class="cs">Use when reading, converting, or extracting</span>
-<span class="cs">           content from PDF files. Handles text,</span>
-<span class="cs">           tables, images, and form fields.</span>
-<span class="cm">---</span>
-
-<span class="csym">##</span> <span class="ck">Environment</span>
-<span class="cv">- Primary lib: pymupdf4llm (best for LLM pipelines)</span>
-<span class="cv">- Fallback: pdfplumber for table extraction</span>
-<span class="cv">- Output dir: /tmp/pdf-out/</span>
-
-<span class="csym">##</span> <span class="ck">Workflow</span>
-<span class="cv">1. Read with pymupdf4llm.to_markdown(path)</span>
-<span class="cv">2. For tables: pdfplumber.open(path).pages[n].extract_table()</span>
-<span class="cv">3. Save output to /tmp/pdf-out/{filename}.md</span>
-
-<span class="csym">##</span> <span class="ck">Never do</span>
-<span class="cv">- Never use PyPDF2 (deprecated)</span>
-<span class="cv">- Never load entire PDF into context if > 50 pages</span>
-      </div>
-      <div class="tip">The description field is how Claude decides to pull in the skill. Write it to match exactly how users phrase requests — "convert this PDF", "read this PDF", "extract tables from..."</div>
-    </div>
-
-    <!-- L3 -->
-    <div class="panel" id="p-l3">
-      <div class="lhero">
-        <div class="lbadge" style="background:rgba(232,114,42,.1);border:1px solid rgba(232,114,42,.25);color:var(--orange)">L3</div>
-        <div class="ldesc"><h2 style="color:var(--orange)">Hooks — Guardrail Layer</h2><p>Deterministic. Not AI. Shell scripts that fire on agent events. Git hooks, but for your agent.</p></div>
-      </div>
-      <div class="quote" style="border-left-color:var(--orange)">Hooks turn vibes into rules. Git hooks, but for your agent.</div>
-      <div class="g2">
-        <div class="card">
-          <div class="clabel">Matcher</div>
-          <div class="ctitle" style="font-family:'JetBrains Mono',monospace;font-size:12px">Bash(rm *)</div>
-          <div class="cbody">Wildcard matchers on tool name<br>Regex matchers on command<br>Exact-string matchers</div>
+      <!-- L1 -->
+      <div class="ld-layer" style="--lc:#e84545;--lb:rgba(232,69,69,.12)">
+        <div class="ld-layer-header">
+          <span class="ld-layer-num">Layer 1</span>
+          <span class="ld-layer-name">CLAUDE.md</span>
+          <span class="ld-layer-sub">(The Memory Layer)</span>
         </div>
-        <div class="card">
-          <div class="clabel">Command</div>
-          <div class="ctitle" style="font-family:'JetBrains Mono',monospace;font-size:11px">if [ ... ]; then exit 2; fi</div>
-          <div class="cbody">Block dangerous tools (exit 2)<br>Inject context (echo to stdout)<br>Audit log (append to file)</div>
+        <a class="ld-row" href="l1.html">
+          <span class="ld-tree">&#9500;</span><span class="ld-folder-icon" style="color:#e84545">&#128193;</span>
+          <span class="ld-item-name">CLAUDE.md/</span>
+          <span class="ld-dots"></span>
+          <span class="ld-tag" style="background:rgba(232,69,69,.15);color:#e84545">L1 . Memory Layer</span>
+        </a>
+        <div class="ld-row ld-sub">
+          <span class="ld-tree">&#9474;&nbsp;&nbsp;&#9500;</span><span class="ld-file-icon">&#9647;</span>
+          <span class="ld-item-name">architecture.rules</span>
+          <span class="ld-dots"></span>
+          <span class="ld-desc">Naming, structure, repo expectations</span>
+        </div>
+        <div class="ld-row ld-sub">
+          <span class="ld-tree">&#9474;&nbsp;&nbsp;&#9500;</span><span class="ld-file-icon">&#9647;</span>
+          <span class="ld-item-name">global.md</span>
+          <span class="ld-dots"></span>
+          <span class="ld-desc">Lives at ~/.claude/, every project</span>
+        </div>
+        <div class="ld-row ld-sub">
+          <span class="ld-tree">&#9474;&nbsp;&nbsp;&#9492;</span><span class="ld-file-icon">&#9647;</span>
+          <span class="ld-item-name">project.md</span>
+          <span class="ld-dots"></span>
+          <span class="ld-desc">Lives at .claude/, this repo only</span>
         </div>
       </div>
-      <div class="sec">All hook types</div>
-      <div class="card" style="margin-bottom:16px">
-        <div class="hook-row"><span class="hook-name" style="color:var(--orange)">PreToolUse.sh</span><span class="hook-desc">Inspect or block before any tool runs</span></div>
-        <div class="hook-row"><span class="hook-name" style="color:var(--orange)">PostToolUse.sh</span><span class="hook-desc">Lint, log, or notify after tool runs</span></div>
-        <div class="hook-row"><span class="hook-name" style="color:var(--orange)">SessionStart.sh</span><span class="hook-desc">Load context when a session begins</span></div>
-        <div class="hook-row"><span class="hook-name" style="color:var(--orange)">Stop.sh</span><span class="hook-desc">Run when Claude finishes a turn</span></div>
-        <div class="hook-row"><span class="hook-name" style="color:var(--orange)">SubagentStop.sh</span><span class="hook-desc">Run when a subagent returns</span></div>
+
+      <!-- L2 -->
+      <div class="ld-layer" style="--lc:#f0a030;--lb:rgba(240,160,48,.12)">
+        <div class="ld-layer-header">
+          <span class="ld-layer-num">Layer 2</span>
+          <span class="ld-layer-name">Skills</span>
+          <span class="ld-layer-sub">(The Knowledge Layer)</span>
+        </div>
+        <a class="ld-row" href="l2.html">
+          <span class="ld-tree">&#9500;</span><span class="ld-folder-icon" style="color:#f0a030">&#128193;</span>
+          <span class="ld-item-name">skills/</span>
+          <span class="ld-dots"></span>
+          <span class="ld-tag" style="background:rgba(240,160,48,.15);color:#f0a030">L2 . Knowledge Layer</span>
+        </a>
+        <div class="ld-row ld-sub">
+          <span class="ld-tree">&#9474;&nbsp;&nbsp;&#9500;</span><span class="ld-file-icon">&#9647;</span>
+          <span class="ld-item-name">SKILL.md</span>
+          <span class="ld-dots"></span>
+          <span class="ld-desc">Description matched, auto invoked</span>
+        </div>
+        <div class="ld-row ld-sub">
+          <span class="ld-tree">&#9474;&nbsp;&nbsp;&#9500;</span><span class="ld-file-icon">&#9647;</span>
+          <span class="ld-item-name">scripts/</span>
+          <span class="ld-dots"></span>
+          <span class="ld-desc">Reference scripts and templates</span>
+        </div>
+        <div class="ld-row ld-sub">
+          <span class="ld-tree">&#9474;&nbsp;&nbsp;&#9492;</span><span class="ld-file-icon">&#9647;</span>
+          <span class="ld-item-name">context.md</span>
+          <span class="ld-dots"></span>
+          <span class="ld-desc">On demand, isolated subagent</span>
+        </div>
       </div>
-      <div class="sec">PreToolUse.sh — block dangerous commands</div>
-      <div class="cb">
-<span class="csym">#!/bin/bash</span>
-<span class="cm"># hooks/PreToolUse.sh — exit 2 = block, exit 0 = allow</span>
 
-TOOL=<span class="cs">"$1"</span>
-INPUT=<span class="cs">$(cat)</span>   <span class="cm"># JSON piped to stdin</span>
-
-<span class="ccmd">if</span> [[ <span class="cs">"$TOOL"</span> == <span class="cs">"bash"</span> ]]; then
-  CMD=<span class="cs">$(echo "$INPUT" | jq -r '.command')</span>
-
-  <span class="cm"># Block rm -rf with wildcard matcher</span>
-  <span class="ccmd">if</span> echo <span class="cs">"$CMD"</span> | grep -qE <span class="cs">'rm\s+-rf'</span>; then
-    echo <span class="cs">"BLOCKED: rm -rf not allowed"</span> >&2
-    exit 2   <span class="cm"># ← exit 2 = hard block</span>
-  <span class="ccmd">fi</span>
-
-  <span class="cm"># Block prod kubectl without --dry-run</span>
-  <span class="ccmd">if</span> echo <span class="cs">"$CMD"</span> | grep -q <span class="cs">'kubectl.*prod'</span>; then
-    <span class="ccmd">if</span> ! echo <span class="cs">"$CMD"</span> | grep -q <span class="cs">'--dry-run'</span>; then
-      echo <span class="cs">"BLOCKED: prod kubectl requires --dry-run"</span> >&2
-      exit 2
-    <span class="ccmd">fi</span>
-  <span class="ccmd">fi</span>
-<span class="ccmd">fi</span>
-
-exit 0  <span class="cm"># allow</span>
+      <!-- L3 -->
+      <div class="ld-layer" style="--lc:#e8722a;--lb:rgba(232,114,42,.12)">
+        <div class="ld-layer-header">
+          <span class="ld-layer-num">Layer 3</span>
+          <span class="ld-layer-name">Hooks</span>
+          <span class="ld-layer-sub">(The Guardrail Layer)</span>
+        </div>
+        <a class="ld-row" href="l3.html">
+          <span class="ld-tree">&#9500;</span><span class="ld-folder-icon" style="color:#e8722a">&#128193;</span>
+          <span class="ld-item-name">hooks/</span>
+          <span class="ld-dots"></span>
+          <span class="ld-tag" style="background:rgba(232,114,42,.15);color:#e8722a">L3 . Guardrail Layer</span>
+        </a>
+        <div class="ld-row ld-sub">
+          <span class="ld-tree">&#9474;&nbsp;&nbsp;&#9500;</span><span class="ld-file-icon">&#9647;</span>
+          <span class="ld-item-name">PreToolUse.sh</span>
+          <span class="ld-dots"></span>
+          <span class="ld-desc">Block rm -rf, validate before run</span>
+        </div>
+        <div class="ld-row ld-sub">
+          <span class="ld-tree">&#9474;&nbsp;&nbsp;&#9500;</span><span class="ld-file-icon">&#9647;</span>
+          <span class="ld-item-name">PostToolUse.sh</span>
+          <span class="ld-dots"></span>
+          <span class="ld-desc">Auto lint on Write, ping Slack</span>
+        </div>
+        <div class="ld-row ld-sub">
+          <span class="ld-tree">&#9474;&nbsp;&nbsp;&#9500;</span><span class="ld-file-icon">&#9647;</span>
+          <span class="ld-item-name">Stop.sh</span>
+          <span class="ld-dots"></span>
+          <span class="ld-desc">Run when Claude finishes a turn</span>
+        </div>
+        <div class="ld-row ld-sub">
+          <span class="ld-tree">&#9474;&nbsp;&nbsp;&#9492;</span><span class="ld-file-icon">&#9647;</span>
+          <span class="ld-item-name">SubagentStop.sh</span>
+          <span class="ld-dots"></span>
+          <span class="ld-desc">Deterministic. Not AI. Git hooks.</span>
+        </div>
       </div>
-      <div class="sec">PostToolUse.sh — auto-lint + SubagentStop.sh</div>
-      <div class="cb">
-<span class="csym">#!/bin/bash</span>
-<span class="cm"># hooks/PostToolUse.sh</span>
-FILE=<span class="cs">$(echo "$(cat)" | jq -r '.path // empty')</span>
-<span class="ccmd">if</span> [[ <span class="cs">"$1"</span> == <span class="cs">"write_file"</span> ]] && [[ <span class="cs">"$FILE"</span> == <span class="cs">*.py</span> ]]; then
-  ruff check --fix <span class="cs">"$FILE"</span> 2>/dev/null
-<span class="ccmd">fi</span>
-exit 0
 
-<span class="cm">---</span>
-<span class="cm"># hooks/SubagentStop.sh — fires when any subagent finishes</span>
-RESULT=<span class="cs">$(cat)</span>   <span class="cm"># subagent return value as JSON</span>
-echo <span class="cs">"[audit] subagent done: $(date)"</span> >> .claude/audit.log
-exit 0
+      <!-- L4 -->
+      <div class="ld-layer" style="--lc:#4a90e2;--lb:rgba(74,144,226,.12)">
+        <div class="ld-layer-header">
+          <span class="ld-layer-num">Layer 4</span>
+          <span class="ld-layer-name">Subagents</span>
+          <span class="ld-layer-sub">(The Delegation Layer)</span>
+        </div>
+        <a class="ld-row" href="l4.html">
+          <span class="ld-tree">&#9500;</span><span class="ld-folder-icon" style="color:#4a90e2">&#128193;</span>
+          <span class="ld-item-name">subagents/</span>
+          <span class="ld-dots"></span>
+          <span class="ld-tag" style="background:rgba(74,144,226,.15);color:#4a90e2">L4 . Delegation Layer</span>
+        </a>
+        <div class="ld-row ld-sub">
+          <span class="ld-tree">&#9474;&nbsp;&nbsp;&#9500;</span><span class="ld-file-icon">&#9647;</span>
+          <span class="ld-item-name">code-reviewer.md</span>
+          <span class="ld-dots"></span>
+          <span class="ld-desc">Own context window, results only</span>
+        </div>
+        <div class="ld-row ld-sub">
+          <span class="ld-tree">&#9474;&nbsp;&nbsp;&#9500;</span><span class="ld-file-icon">&#9647;</span>
+          <span class="ld-item-name">test-runner.md</span>
+          <span class="ld-dots"></span>
+          <span class="ld-desc">Custom tools, custom permissions</span>
+        </div>
+        <div class="ld-row ld-sub">
+          <span class="ld-tree">&#9474;&nbsp;&nbsp;&#9500;</span><span class="ld-file-icon">&#9647;</span>
+          <span class="ld-item-name">explorer.md</span>
+          <span class="ld-dots"></span>
+          <span class="ld-desc">Keeps the main context clean</span>
+        </div>
+        <div class="ld-row ld-sub">
+          <span class="ld-tree">&#9474;&nbsp;&nbsp;&#9492;</span><span class="ld-file-icon">&#9647;</span>
+          <span class="ld-item-name">feature-dev.md</span>
+          <span class="ld-dots"></span>
+          <span class="ld-desc">Designs and implements end-to-end</span>
+        </div>
       </div>
-      <div class="sec">Flow</div>
-      <div class="flow" style="margin-bottom:0">
-        <div class="fi" style="border-color:rgba(232,114,42,.4);color:var(--orange)">① Event fires</div>
-        <div class="fa">→</div>
-        <div class="fi" style="border-color:rgba(232,114,42,.4);color:var(--orange)">② Matcher checks</div>
-        <div class="fa">→</div>
-        <div class="fi" style="border-color:rgba(232,114,42,.4);color:var(--orange)">③ Command runs</div>
+
+      <!-- L5 -->
+      <div class="ld-layer" style="--lc:#a78bfa;--lb:rgba(167,139,250,.12)">
+        <div class="ld-layer-header">
+          <span class="ld-layer-num">Layer 5</span>
+          <span class="ld-layer-name">Plugins</span>
+          <span class="ld-layer-sub">(The Distribution Layer)</span>
+        </div>
+        <a class="ld-row" href="l5.html">
+          <span class="ld-tree">&#9492;</span><span class="ld-folder-icon" style="color:#a78bfa">&#128193;</span>
+          <span class="ld-item-name">plugins/</span>
+          <span class="ld-dots"></span>
+          <span class="ld-tag" style="background:rgba(167,139,250,.15);color:#a78bfa">L5 . Distribution Layer</span>
+        </a>
+        <div class="ld-row ld-sub">
+          <span class="ld-tree">&nbsp;&nbsp;&nbsp;&#9500;</span><span class="ld-file-icon">&#9647;</span>
+          <span class="ld-item-name">manifest.json</span>
+          <span class="ld-dots"></span>
+          <span class="ld-desc">Bundles skills, agents, hooks, cmds</span>
+        </div>
+        <div class="ld-row ld-sub">
+          <span class="ld-tree">&nbsp;&nbsp;&nbsp;&#9500;</span><span class="ld-file-icon">&#9647;</span>
+          <span class="ld-item-name">marketplace.url</span>
+          <span class="ld-dots"></span>
+          <span class="ld-desc">npm packages for agent capabilities</span>
+        </div>
+        <div class="ld-row ld-sub">
+          <span class="ld-tree">&nbsp;&nbsp;&nbsp;&#9492;</span><span class="ld-file-icon">&#9647;</span>
+          <span class="ld-item-name">team.install</span>
+          <span class="ld-dots"></span>
+          <span class="ld-desc">One install, every teammate aligned</span>
+        </div>
       </div>
-      <div style="margin-top:14px"></div>
-      <div class="warn">Exit code 2 = block the tool call. Exit 0 = allow. Keep hooks fast — they're synchronous and block every tool call.</div>
+
+    </div><!-- /ld-main -->
+
+    <div class="ld-side ld-side-right">
+      <div class="ld-side-title">Agent Teams</div>
+      <div class="ld-side-items">parallel<br>execution<br>message<br>passing<br>lead<br>shared<br>perms</div>
     </div>
 
-    <!-- L4 -->
-    <div class="panel" id="p-l4">
-      <div class="lhero">
-        <div class="lbadge" style="background:rgba(74,144,226,.1);border:1px solid rgba(74,144,226,.25);color:var(--blue)">L4</div>
-        <div class="ldesc"><h2 style="color:var(--blue)">Subagents — Delegation Layer</h2><p>Own context window. Delegate work without polluting your main session. Returns ONE message back.</p></div>
-      </div>
-      <div class="quote" style="border-left-color:var(--blue)">Delegate the noise. Keep the main thread clean.</div>
-      <div class="g2">
-        <div class="card"><div class="clabel">Parent · main session</div><div class="ctitle">Where you talk to Claude</div><div class="cbody">Plans the work<br>Calls subagents like tools<br>Stays clean — only sees results</div></div>
-        <div class="card"><div class="clabel">Child · subagent run</div><div class="ctitle">Spawned for one job</div><div class="cbody">Own system prompt + tools<br>Own context window<br>Returns ONE message back</div></div>
-      </div>
-      <div class="sec">Built-in subagents</div>
-      <div class="card" style="margin-bottom:16px">
-        <div class="hook-row"><span class="hook-name" style="color:var(--blue)">code-reviewer.md</span><span class="hook-desc">Reviews diffs against repo conventions</span></div>
-        <div class="hook-row"><span class="hook-name" style="color:var(--blue)">test-runner.md</span><span class="hook-desc">Runs the suite and reports failures</span></div>
-        <div class="hook-row"><span class="hook-name" style="color:var(--blue)">explorer.md</span><span class="hook-desc">Maps the codebase, returns findings</span></div>
-        <div class="hook-row"><span class="hook-name" style="color:var(--blue)">feature-dev.md</span><span class="hook-desc">Designs and implements end-to-end</span></div>
-      </div>
-      <div class="sec">Subagent definition template</div>
-      <div class="cb">
-<span class="cm">---</span>
-<span class="cm"># subagents/code-reviewer.md</span>
-<span class="ck">name:</span> <span class="cs">code-reviewer</span>
-<span class="ck">description:</span> <span class="cs">Reviews code for bugs, style, security</span>
-<span class="ck">tools:</span> <span class="cv">[read_file, list_directory]</span>  <span class="cm"># no write access</span>
-<span class="ck">model:</span> <span class="cs">claude-sonnet-4-20250514</span>
-<span class="cm">---</span>
+  </div><!-- /ld-wrap -->
 
-<span class="csym">##</span> <span class="ck">Role</span>
-<span class="cv">Senior code reviewer. Receive a diff or file path.</span>
-<span class="cv">Return structured findings only — no chit-chat.</span>
+  <div class="g3">
+    <div class="card"><div class="card-label">Install</div><div class="card-title">Claude Code CLI</div><div class="card-body">npm install -g @anthropic-ai/claude-code<br>claude --version</div></div>
+    <div class="card"><div class="card-label">Init project</div><div class="card-title">Scaffold structure</div><div class="card-body">mkdir my-agent &amp;&amp; cd my-agent<br>claude init</div></div>
+    <div class="card"><div class="card-label">Global config</div><div class="card-title">Personal defaults</div><div class="card-body">~/.claude/CLAUDE.md<br>~/.claude/skills/</div></div>
+  </div>
 
-<span class="csym">##</span> <span class="ck">Output format (return ONE message)</span>
-<span class="cv">{ "issues": [</span>
-<span class="cv">    { "line": N, "severity": "high|med|low",</span>
-<span class="cv">      "message": "..." }</span>
-<span class="cv">  ]</span>
-<span class="cv">}</span>
-
-<span class="csym">##</span> <span class="ck">Rules</span>
-<span class="cv">- Flag SQL injections, XSS, secrets in code</span>
-<span class="cv">- Check naming conventions from .claude/CLAUDE.md</span>
-<span class="cv">- Always return even if empty: { "issues": [] }</span>
-      </div>
-      <div class="tip">Agent Teams: run subagents in parallel via message passing with shared permissions. One per module — main session only sees aggregated results.</div>
-    </div>
-
-    <!-- L5 -->
-    <div class="panel" id="p-l5">
-      <div class="lhero">
-        <div class="lbadge" style="background:rgba(167,139,250,.1);border:1px solid rgba(167,139,250,.25);color:var(--purple)">L5</div>
-        <div class="ldesc"><h2 style="color:var(--purple)">Plugins — Distribution Layer</h2><p>Bundle. Ship. Install. npm packages for agent capabilities — one install, every teammate aligned.</p></div>
-      </div>
-      <div class="quote" style="border-left-color:var(--purple)">Build it once. Install it everywhere. The team levels up together.</div>
-      <div class="g2">
-        <div class="card"><div class="clabel">Manifest · plugin.json</div><div class="ctitle">Declares what's inside</div><div class="cbody">Lists skills, agents, hooks, commands<br>Versioned and signed<br>One file to rule them all</div></div>
-        <div class="card"><div class="clabel">Store · marketplace.url</div><div class="ctitle">Discoverable by team</div><div class="cbody">One-click install per repo<br>Updates push to everyone<br>Private or public registry</div></div>
-      </div>
-      <div class="sec">What you can ship in a plugin</div>
-      <div class="card" style="margin-bottom:16px">
-        <div class="hook-row"><span class="hook-name" style="color:var(--purple)">skills/</span><span class="hook-desc">Knowledge bundles ride along</span></div>
-        <div class="hook-row"><span class="hook-name" style="color:var(--purple)">agents/</span><span class="hook-desc">Subagents ship inside the plugin</span></div>
-        <div class="hook-row"><span class="hook-name" style="color:var(--purple)">hooks/</span><span class="hook-desc">Guardrails travel with the bundle</span></div>
-        <div class="hook-row"><span class="hook-name" style="color:var(--purple)">commands/</span><span class="hook-desc">Slash-commands the team gets</span></div>
-      </div>
-      <div class="sec">plugin.json</div>
-      <div class="cb">
-{
-  <span class="ck">"name"</span>: <span class="cs">"my-plugin"</span>,
-  <span class="ck">"version"</span>: <span class="cs">"1.0.0"</span>,
-  <span class="ck">"skills"</span>: [<span class="cs">"build"</span>, <span class="cs">"ship"</span>, <span class="cs">"pdf"</span>],
-  <span class="ck">"agents"</span>: [<span class="cs">"code-reviewer"</span>, <span class="cs">"test-runner"</span>],
-  <span class="ck">"hooks"</span>: [<span class="cs">"PreToolUse.sh"</span>, <span class="cs">"PostToolUse.sh"</span>],
-  <span class="ck">"commands"</span>: [<span class="cs">"/review"</span>, <span class="cs">"/ship"</span>, <span class="cs">"/test"</span>],
-  <span class="ck">"mcp_servers"</span>: [
-    { <span class="ck">"name"</span>: <span class="cs">"github"</span>, <span class="ck">"url"</span>: <span class="cs">"https://mcp.github.com"</span> }
-  ]
-}
-      </div>
-      <div class="sec">Install flow: bundle → publish → team install</div>
-      <div class="flow">
-        <div class="fi" style="min-width:100px;border-color:rgba(167,139,250,.3)">skills/<br>agents/<br>hooks/<br>cmd.md<br><span style="font-size:9px;color:var(--muted)">bundle</span></div>
-        <div class="fa">→</div>
-        <div class="fi" style="border-color:rgba(167,139,250,.5);color:var(--purple)">.plugin<br><span style="font-size:9px;color:var(--muted)">publish</span></div>
-        <div class="fa">→</div>
-        <div class="fi" style="border-color:rgba(167,139,250,.3)">npm install<br>@myorg/agent<br><span style="font-size:9px;color:var(--muted)">team install</span></div>
-      </div>
-      <div class="warn">Build L1–L4 first, stabilize them, then distribute as a plugin. Don't distribute a moving target.</div>
-    </div>
-
+  <div class="page-nav">
+    <div class="pn-empty"></div>
+    <a class="pn-btn next" href="l1.html">&rarr; <div><span>Next</span><span class="pn-label">L1 &middot; CLAUDE.md</span></div></a>
   </div>
 </div>
 
-<script>
-function show(id){
-  var tabs=document.querySelectorAll('.tab');
-  var ids=['ov','l1','l2','l3','l4','l5'];
-  tabs.forEach(function(t,i){t.classList.toggle('active',ids[i]===id);});
-  document.querySelectorAll('.panel').forEach(function(p){p.classList.toggle('active',p.id==='p-'+id);});
-}
-</script>
+<footer>
+  <p>Claude Code &middot; Agent Development Kit &middot; <a href="https://github.com/dantonoli/claude-code-config-guide" target="_blank">github.com/dantonoli/claude-code-config-guide</a></p>
+</footer>
+<script src="nav.js"></script>
+</body>
+</html>
