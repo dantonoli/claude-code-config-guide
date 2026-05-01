@@ -20,3 +20,35 @@ function copyCode(btn){
     setTimeout(function(){ btn.textContent = 'copy'; btn.classList.remove('copied'); }, 1800);
   });
 }
+
+// Guide download button
+(function(){
+  var btn = document.querySelector('.dl-btn[data-guide-path]');
+  if (!btn) return;
+
+  btn.addEventListener('click', function(event){
+    event.preventDefault();
+
+    var guidePath = btn.getAttribute('data-guide-path');
+    var filename = btn.getAttribute('download') || 'claude-code-guide.md';
+
+    fetch(guidePath)
+      .then(function(response){
+        if (!response.ok) throw new Error('Download failed');
+        return response.blob();
+      })
+      .then(function(blob){
+        var objectUrl = URL.createObjectURL(blob);
+        var link = document.createElement('a');
+        link.href = objectUrl;
+        link.download = filename;
+        document.body.appendChild(link);
+        link.click();
+        link.remove();
+        URL.revokeObjectURL(objectUrl);
+      })
+      .catch(function(){
+        window.open(guidePath, '_blank', 'noopener');
+      });
+  });
+})();
