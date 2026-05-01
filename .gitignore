@@ -1,0 +1,44 @@
+# ── Secrets & environment ──────────────────────────────────────────────────────
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*.p12
+*.pfx
+*.crt
+*.cer
+secrets/
+credentials/
+
+# ── macOS ──────────────────────────────────────────────────────────────────────
+.DS_Store
+.AppleDouble
+.LSOverride
+._*
+.Spotlight-V100
+.Trashes
+.fseventsd
+
+# ── Editors & IDEs ─────────────────────────────────────────────────────────────
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# ── Node / npm (if tooling is ever added) ──────────────────────────────────────
+node_modules/
+npm-debug.log*
+yarn-error.log*
+.pnp.*
+.yarn/
+
+# ── Build / output ─────────────────────────────────────────────────────────────
+dist/
+build/
+out/
+
+# ── Logs ───────────────────────────────────────────────────────────────────────
+*.log
+logs/
