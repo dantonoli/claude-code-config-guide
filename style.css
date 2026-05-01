@@ -31,8 +31,9 @@ nav{position:sticky;top:0;z-index:100;background:rgba(15,15,15,0.96);backdrop-fi
 
 /* HERO (index only) */
 .hero-eyebrow{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--red);letter-spacing:.14em;text-transform:uppercase;margin-bottom:14px;}
-.hero-title{font-size:50px;font-weight:800;letter-spacing:-2px;line-height:1.05;margin-bottom:14px;}
-.hero-title span{color:var(--red);}
+.hero-title{display:flex;flex-direction:column;align-items:flex-start;font-size:50px;font-weight:800;letter-spacing:-1.6px;line-height:1;margin-bottom:18px;overflow:visible;}
+.hero-line{display:block;line-height:1;padding-bottom:.1em;}
+.hero-line-accent{color:var(--red);margin-top:-.03em;}
 .hero-sub{font-family:'JetBrains Mono',monospace;font-size:13px;color:var(--muted);margin-bottom:36px;line-height:1.8;}
 .hero-flow{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:48px;}
 .hfi{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:11px 16px;font-size:11px;font-weight:700;font-family:'JetBrains Mono',monospace;text-align:center;text-decoration:none;color:var(--text);transition:border-color .15s;}
